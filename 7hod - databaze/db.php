@@ -1,3 +1,3 @@
 <?php
-    $db =  new mysqli("localhost","root","","2itcwea23") or die;
+    $db =  new mysqli("localhost","guest","","nation") or die;
 ?>
