@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receptář</title>
+</head>
+<body>
+    <div>
+        <input type="text" name="title" id="title">
+        <textarea class="editor" name="ingredients" id="ingredients" cols="30" rows="10"></textarea>
+        <textarea  class="editor" name="directions" id="directions" cols="30" rows="10"></textarea>
+    </div>
+    <div id="recepty">
+
+
+    </div>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    ClassicEditor
+    .create( document.querySelector( '#ingredients' ) )
+    .catch( error => {
+        console.error( error );
+    } ); 
+    ClassicEditor
+    .create( document.querySelector( '#directions' ) )
+    .catch( error => {
+        console.error( error );
+    } );       
+    $.get("https://recipes.matav.cz/recipes",OnReceptyZiskany);
+
+    function OnReceptyZiskany(data, HTTPstatus){
+        console.log(data);
+        console.log("Status: "+HTTPstatus);
+        for(let recept in data){
+            $("#recepty").append(`<div> <h1>${data[recept].title}</h1> <p>${data[recept].ingredients}</p> <p>${data[recept].directions}</p>  </div>`);
+        }
+    
+    }
+</script>
+</body>
+</html>
