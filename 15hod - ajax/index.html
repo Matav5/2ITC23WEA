@@ -7,9 +7,12 @@
 </head>
 <body>
     <div>
+        
         <input type="text" name="title" id="title">
-        <textarea class="editor" name="ingredients" id="ingredients" cols="30" rows="10"></textarea>
-        <textarea  class="editor" name="directions" id="directions" cols="30" rows="10"></textarea>
+        <textarea name="ingredients" id="ingredients" cols="30" rows="10"></textarea>
+        <textarea name="directions" id="directions" cols="30" rows="10"></textarea>
+
+        <button onclick="PridejRecept()">Přidej Recept</button>
     </div>
     <div id="recepty">
 
@@ -18,16 +21,20 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-    ClassicEditor
-    .create( document.querySelector( '#ingredients' ) )
-    .catch( error => {
-        console.error( error );
-    } ); 
-    ClassicEditor
-    .create( document.querySelector( '#directions' ) )
-    .catch( error => {
-        console.error( error );
-    } );       
+
+    let ingredientsEditor;
+    
+    
+    ClassicEditor.create(document.getElementById("ingredients")).then((editor) =>{
+        ingredientsEditor = editor;
+    });
+
+    let directionsEditor;
+    
+    ClassicEditor.create(document.getElementById("directions")).then((editor) =>{
+        directionsEditor = editor;
+    });
+
     $.get("https://recipes.matav.cz/recipes",OnReceptyZiskany);
 
     function OnReceptyZiskany(data, HTTPstatus){
@@ -38,6 +45,24 @@
         }
     
     }
+
+    function PridejRecept(){
+
+            let data = {};
+            data.title = $("#title").val();
+            data.ingredients =ingredientsEditor.getData();
+            data.directions = directionsEditor.getData();
+            console.log(JSON.stringify(data));
+          //  $.post("http://127.0.0.1:3000/recipes", {title:"AA"} ,OnReceptPridan)
+
+        $.post("http://127.0.0.1:3000/recipes", data ,OnReceptPridan)
+
+    }
+    function OnReceptPridan(data, HTTPstatus){
+        console.log(data);
+        console.log(HTTPstatus);
+    }
+
 </script>
 </body>
 </html>
